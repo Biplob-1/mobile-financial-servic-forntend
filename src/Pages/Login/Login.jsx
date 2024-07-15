@@ -1,15 +1,34 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Assuming you are using react-router-dom for navigation
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [mobileNumber, setMobileNumber] = useState('');
+  const [pin, setPin] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Email:', email);
-    console.log('Password:', password);
+    const user = { mobileNumber, pin };
+
+    try {
+      const response = await fetch('http://localhost:5000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(user),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        console.log('Login successful:', data);
+        navigate('/dashboard');
+      } else {
+        console.error('Login failed:', data.message);
+      }
+    } catch (error) {
+      console.error('Error logging in:', error);
+    }
   };
 
   return (
@@ -18,27 +37,27 @@ const Login = () => {
         <h1 className="text-2xl font-bold text-center">Login</h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="form-control">
-            <label htmlFor="email" className="label">
-              <span className="label-text">Email</span>
+            <label htmlFor="mobileNumber" className="label">
+              <span className="label-text">Mobile Number</span>
             </label>
             <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="tel"
+              id="mobileNumber"
+              value={mobileNumber}
+              onChange={(e) => setMobileNumber(e.target.value)}
               required
               className="input input-bordered w-full"
             />
           </div>
           <div className="form-control">
-            <label htmlFor="password" className="label">
-              <span className="label-text">Pin</span>
+            <label htmlFor="pin" className="label">
+              <span className="label-text">PIN</span>
             </label>
             <input
               type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              id="pin"
+              value={pin}
+              onChange={(e) => setPin(e.target.value)}
               required
               className="input input-bordered w-full"
             />
