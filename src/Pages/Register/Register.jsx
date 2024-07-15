@@ -7,13 +7,24 @@ const Register = () => {
   const [mobileNumber, setMobileNumber] = useState('');
   const [email, setEmail] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Name:', name);
-    console.log('PIN:', pin);
-    console.log('Mobile Number:', mobileNumber);
-    console.log('Email:', email);
+    const user = { name, pin, mobileNumber, email };
+
+    try {
+      const response = await fetch('http://localhost:5000/insertUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(user),
+      });
+
+      const data = await response.json();
+      console.log('User registered:', data);
+    } catch (error) {
+      console.error('Error registering user:', error);
+    }
   };
 
   return (
@@ -60,7 +71,7 @@ const Register = () => {
               onChange={(e) => setMobileNumber(e.target.value)}
               required
               pattern="^\d{11}$"
-              title="Mobile number must be a 11-digit number"
+              title="Mobile number must be an 11-digit number"
               className="input input-bordered w-full"
             />
           </div>
