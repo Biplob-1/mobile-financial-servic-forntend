@@ -12,6 +12,10 @@ import Cashin from "../Pages/Dashboard/UserDashboard/Cashin";
 import BalanceInquiry from "../Pages/Dashboard/UserDashboard/BalanceInquiry";
 import TransactionsHistory from "../Pages/Dashboard/UserDashboard/TransactionsHistory";
 import Dashboard from "../Layout/Dashboard";
+import UserManagement from "../Pages/Dashboard/AdminDashboard/UserManagement";
+import SystemMonitoring from "../Pages/Dashboard/AdminDashboard/SystemMonitoring";
+import TransactionManagement from "../Pages/Dashboard/AgentDashboard/TransactionManagement";
+import LogOut from "../Pages/Dashboard/LogOut/LogOut";
   export const router = createBrowserRouter([
     {
       path: "/",
@@ -47,6 +51,21 @@ import Dashboard from "../Layout/Dashboard";
         path: 'dashboard',
         element:<Dashboard></Dashboard>,
         children: [
+            // admin components
+            {
+                path: 'user-management',
+                element: <UserManagement></UserManagement>
+            },
+            {
+                path: 'system-monitoring',
+                element: <SystemMonitoring></SystemMonitoring>
+            },
+            // agent components
+            {
+                path:'transaction-management',
+                element: <TransactionManagement></TransactionManagement>
+            },
+            // user components
             {
                 path: 'send-money',
                 element: <SendMoney></SendMoney>
@@ -59,6 +78,7 @@ import Dashboard from "../Layout/Dashboard";
                 path: 'cash-in',
                 element: <Cashin></Cashin>
             },
+            // common components
             {
                 path: 'balance-inquiry',
                 element: <BalanceInquiry></BalanceInquiry>
@@ -67,6 +87,10 @@ import Dashboard from "../Layout/Dashboard";
                 path: 'transactions-history',
                 element: <TransactionsHistory></TransactionsHistory>
             },
+            {
+                path: 'logout',
+                element: <LogOut></LogOut>
+            }
         ]
     }
   ]);
