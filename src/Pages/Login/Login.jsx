@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../Providers/AuthProvider';
 
 const Login = () => {
   const [mobileNumber, setMobileNumber] = useState('');
   const [pin, setPin] = useState('');
   const navigate = useNavigate();
+  
+  const { loginUser } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,6 +25,7 @@ const Login = () => {
       const data = await response.json();
       if (data.success) {
         console.log('Login successful:', data);
+        loginUser(data.user);
         navigate('/dashboard');
       } else {
         console.error('Login failed:', data.message);

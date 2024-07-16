@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../Providers/AuthProvider';
 
 const Register = () => {
   const [name, setName] = useState('');
   const [pin, setPin] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
   const [email, setEmail] = useState('');
+
+  const { registerUser } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,6 +25,11 @@ const Register = () => {
 
       const data = await response.json();
       console.log('User registered:', data);
+
+      if (data.insertedId) {
+        // Set the user in the context if registration is successful
+        registerUser(user);
+      }
     } catch (error) {
       console.error('Error registering user:', error);
     }

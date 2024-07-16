@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { AuthContext } from '../../../Providers/AuthProvider';
 
 const SendMoney = () => {
   const [recipientNumber, setRecipientNumber] = useState('');
   const [amount, setAmount] = useState('');
   const [pin, setPin] = useState('');
 
+  const {user} = useContext(AuthContext);
+  console.log('user info', user.name);
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission logic here
