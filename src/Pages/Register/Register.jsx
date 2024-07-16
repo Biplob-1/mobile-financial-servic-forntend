@@ -1,15 +1,23 @@
 import { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [name, setName] = useState('');
   const [pin, setPin] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
   const [email, setEmail] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const user = { name, pin, mobileNumber, email };
+    const user = { 
+      name,
+      pin,
+      mobileNumber,
+      email,
+      role: 'pending',
+      balance: 0
+     };
 
     try {
       const response = await fetch('http://localhost:5000/insertUser', {
@@ -21,7 +29,7 @@ const Register = () => {
       });
 
       const data = await response.json();
-      console.log('User registered:', data);
+      navigate('/login');
     } catch (error) {
       console.error('Error registering user:', error);
     }

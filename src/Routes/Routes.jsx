@@ -16,6 +16,7 @@ import UserManagement from "../Pages/Dashboard/AdminDashboard/UserManagement";
 import SystemMonitoring from "../Pages/Dashboard/AdminDashboard/SystemMonitoring";
 import TransactionManagement from "../Pages/Dashboard/AgentDashboard/TransactionManagement";
 import LogOut from "../Pages/Dashboard/LogOut/LogOut";
+import PrivateRoute from "./PrivateRoute";
   export const router = createBrowserRouter([
     {
       path: "/",
@@ -49,7 +50,7 @@ import LogOut from "../Pages/Dashboard/LogOut/LogOut";
     },
     {
         path: 'dashboard',
-        element:<Dashboard></Dashboard>,
+        element:<PrivateRoute><Dashboard></Dashboard></PrivateRoute>,
         children: [
             // admin components
             {
