@@ -6,20 +6,21 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const registerUser = (userData) => {
-    setUser(userData);
-    setLoading(false);
-  };
-
   const loginUser = (userData) => {
     setUser(userData);
     setLoading(false);
   };
+
+  const logoutUser = () => {
+    setUser(null);
+    setLoading(false);
+  };
+
   const authInfo = {
     user,
-    loading,
-    registerUser, 
+    loading, 
     loginUser,
+    logoutUser,
   };
 
   

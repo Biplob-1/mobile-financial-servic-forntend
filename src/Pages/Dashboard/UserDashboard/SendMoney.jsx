@@ -7,7 +7,7 @@ const SendMoney = () => {
   const [pin, setPin] = useState('');
 
   const {user} = useContext(AuthContext);
-  console.log('user info', user.name);
+  console.log('user info', user?.name);
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission logic here

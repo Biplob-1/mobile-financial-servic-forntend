@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import LogOut from '../LogOut/LogOut';
 
 const Sidebar = () => {
   return (
@@ -38,9 +39,10 @@ const Sidebar = () => {
             <Link to="transactions-history" className="flex items-center px-4 py-2 hover:bg-gray-700">
               Transactions History
             </Link>
-            <Link to="logout" className="flex items-center px-4 py-2 hover:bg-gray-700">
+            {/* <Link to="logout" className="flex items-center px-4 py-2 hover:bg-gray-700">
               Logout
-            </Link>
+            </Link> */}
+            <LogOut />
           </nav>
         </div>
       </div>
