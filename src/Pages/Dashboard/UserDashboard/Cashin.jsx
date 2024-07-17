@@ -1,17 +1,55 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../../../Providers/AuthProvider';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Cashin = () => {
   const [agentNumber, setAgentNumber] = useState('');
+  const [agents, setAgents] = useState([]);
   const [amount, setAmount] = useState('');
-  const [pin, setPin] = useState('');
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/allUsers');
+        const filteredAgents = response.data.filter(user => user.role === 'agent');
+        setAgents(filteredAgents);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log('Agent Number:', agentNumber);
-    console.log('Amount:', amount);
-    console.log('PIN:', pin);
-    // Add your logic to cash in
+    const userOrders = { 
+      userName: user.name,
+      userNumber: user.mobileNumber,
+      customerNumber: agentNumber,
+      balance: amount,
+      type: 'cash_in',
+      status: 'pending',
+      fee: 0,
+     };
+     try {
+      const response = await fetch('http://localhost:5000/insertTransactions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userOrders),
+      });
+
+      const data = await response.json();
+      navigate('/dashboard/transactions-history');
+      // console.log('hi')
+    } catch (error) {
+      console.error('Error Cash in Request:', error);
+    }
   };
 
   return (
@@ -30,10 +68,11 @@ const Cashin = () => {
             className="input input-bordered"
           >
             <option value="" disabled>Select agent number</option>
-            <option value="agent1">Agent 1</option>
-            <option value="agent2">Agent 2</option>
-            <option value="agent3">Agent 3</option>
-            {/* Add more options as needed */}
+            {agents.map(agent => (
+              <option key={agent._id} value={agent.mobileNumber}>
+                {agent.name} - {agent.mobileNumber}
+              </option>
+            ))}
           </select>
         </div>
         <div className="flex flex-col">
@@ -48,20 +87,6 @@ const Cashin = () => {
             required
             className="input input-bordered"
             placeholder="Enter amount"
-          />
-        </div>
-        <div className="flex flex-col">
-          <label htmlFor="pin" className="text-sm font-semibold">
-            PIN
-          </label>
-          <input
-            type="password"
-            id="pin"
-            value={pin}
-            onChange={(e) => setPin(e.target.value)}
-            required
-            className="input input-bordered"
-            placeholder="Enter your PIN"
           />
         </div>
         <button type="submit" className="btn btn-primary w-full">
